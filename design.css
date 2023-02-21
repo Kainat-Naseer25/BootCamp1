@@ -1,0 +1,15 @@
+ul{
+    list-style: none;
+}
+.navbar-brand{
+    color: white;
+}
+.navbar2{
+    color: white;
+}
+@media only screen and (max-width: 600px) {
+    .addContact {
+      width: 60%;
+      margin: auto;
+    }
+  }
