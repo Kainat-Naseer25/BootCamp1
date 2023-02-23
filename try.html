@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fetching User Data</title>
+  </head>
+  <body>
+    <h1>User Data</h1>
+    <div id="user-container"></div>
+
+    <script>
+      const url = "https://jsonplaceholder.typicode.com/users";
+      const userContainer = document.getElementById("user-container");
+
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          const users = data.slice(0, 3); // Get the first 3 users
+
+          users.forEach(user => {
+            const { id, name, phone, email } = user;
+            const imgUrl = `https://i.pravatar.cc/150?u=${id}`; // Generate a random image using the user's ID
+
+            const userCard = `
+              <div data-id="${id}">
+                <img src="${imgUrl}" alt="User Image">
+                <h2>${name}</h2>
+                <p>Phone: ${phone}</p>
+                <p>Email: ${email}</p>
+                <button onclick="editUser(${id}, '${name}', '${phone}', '${email}')">Edit</button>
+                <button onclick="deleteUser(${id})">Delete</button>
+              </div>
+            `;
+
+            userContainer.innerHTML += userCard;
+          });
+        })
+        .catch(error => console.log(error));
+
+      function editUser(id, name, phone, email) {
+        const form = `
+          <form onsubmit="updateUser(event, ${id})">
+            <label>Name:</label>
+            <input type="text" name="name" value="${name}">
+            <br>
+            <label>Phone:</label>
+            <input type="text" name="phone" value="${phone}">
+            <br>
+            <label>Email:</label>
+            <input type="text" name="email" value="${email}">
+            <br>
+            <button type="submit">Save</button>
+          </form>
+        `;
+
+        const userCard = document.querySelector(`[data-id="${id}"]`);
+        userCard.innerHTML = form;
+      }
+
+      function deleteUser(id) {
+        const userCard = document.querySelector(`[data-id="${id}"]`);
+        userCard.remove();
+      }
+
+      function updateUser(event, id) {
+        event.preventDefault();
+
+        const userCard = document.querySelector(id);
+        const name = event.target.name.value;
+        const email = event.target.email.value;
+        const phone = event.target.phone.value;
+
+        const updatedUser =  `
+      <div class="card mb-3" id=` + user.id + ` style="max-width: 460px; margin-top: 20px;">
+      <div class="card-body"><div class="row personal1 mb-3"><div class="col">
+      <h5 id="setName" class="names"> ${name} </h5>
+      <p><img src="mail.png" style="height: 20px; width:20px;"><span id="setEmail"> ${email} </span></p>
+      <p><img src="phone.png" style="height: 20px; width:20px;"><span id="setPhoneNo"> ${phone} </span></p>
+      <div>
+      <button type="button" class="btn btn-dark" onclick="editUser(" + user.id + ",\"" + user.firstName + "\",\"" + user.lastName + "\",\"" + user.email + "\",\"" + user.phone + "\")'>Edit</button>
+      <button type="button" class="btn btn-danger" onclick="deleteUser(" + user.id + ")'>Delete</button>
+      </div></div><div class='col'>
+      <button type="submit" class="btn btn-primary" style="float: right; margin-right: 50px;">" + user.gender + "</button>
+      <div>
+      <img src=src="https://i.pravatar.cc/150?u=${id}" alt="User Image" style="height: 150px; width: 150px; float: right;">
+      </div></div></div></div></div>
+`;
+
+        userCard.innerHTML = updatedUser;
+      }
+    </script>
+  </body>
+</html>

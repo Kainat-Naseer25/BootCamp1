@@ -1,80 +1,114 @@
+document.addEventListener('DOMContentLoaded',fetchUsers)
 
-function add() {
+// fetching data
+function fetchUsers(){
+    fetch('https://dummyjson.com/users/?limit=4&select=id,firstName,lastName,email,phone,gender,image')
+    .then(res => res.json())
+    .then(data => {cardDetails(data.users);
+        console.log("data");}
+    );
+}
 
-    console.log("run");
-    //for name
-    var inputName = document.getElementById("inputName").value
-    // regex pattern
-    var regName = /^[a-zA-Z\s]*$/;
-    // check
-    if (!regName.test(inputName)) {
-      document.getElementById("error").innerHTML = 'invalid name';
-      document.getElementById('error').classList.remove('d-none');
-      //document.getElementById("error").style.display="block"
-      return false
-    }
+// loop for defined limit
+function cardDetails(users){
+    users.forEach(users => {addUsers(users)}
+    );
+}
+
+// adding fetched data
+function addUsers(user) {
+    var userCard = "<div class='card mb-3' id='card" + user.id + "' style='max-width: 460px; margin-top: 20px;'>" +
+      "<div class='card-body'><div class='row personal1 mb-3'><div class='col'>" +
+      "<h5 id='setName"+user.id+"' class='names'>" + user.firstName +" "+ user.lastName + "</h5>" +
+      "<p><img src='mail.png' style='height: 20px; width:20px;'><span id='setEmail"+user.id+"'>" + user.email + "</span></p>" +
+      "<p><img src='phone.png' style='height: 20px; width:20px;'><span id='setPhoneNo"+user.id+"'>" + user.phone + "</span></p>" +
+      "<div>" +
+      "<button type='button' class='btn btn-dark' onclick='updateUser(" + user.id + ")'>Edit</button>" +
+      "<button type='button' class='btn btn-danger' onclick='deleteUser(" + user.id + ")'>Delete</button>" +
+      "</div></div><div class='col'>" +
+      "<button type='submit' class='btn btn-primary' style='float: right; margin-right: 50px;'>" + user.gender + "</button>" +
+      "<div>" +
+      "<img src='" + user.image + "' style='height: 150px; width: 150px; float: right;'>" +
+      "</div></div></div></div></div>";
   
-    //for email
-    var inputEmail = document.getElementById("inputEmail").value
-    // regex pattern
-    var regEmail =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    // check
-    if (!regEmail.test(inputEmail)) {
-      document.getElementById("error").innerHTML = 'invalid email';
-      document.getElementById('error').classList.remove('d-none');
-      return false
-    }
+    var main = document.getElementById('main');
+    main.innerHTML += userCard;
+}
+
+// updating fetched data
+function updateUser(id) {
+console.log(id)
+    var nameInput = document.getElementById('setName'+id).innerHTML;
+    document.getElementById('inputName').value = nameInput;
+
+    var emailInput = document.getElementById('setEmail'+id).innerHTML;
+    document.getElementById('inputEmail').value = emailInput;
+
+    var phoneInput = document.getElementById('setPhoneNo'+id).innerHTML;
+    document.getElementById('inputPhoneNo').value = phoneInput;
+
+    var button = document.querySelector(".addContact");
+    button.id=id;
+
+    var name = nameInput.value;
+    var email = emailInput.value;
+    var phone = phoneInput.value;
+    var userCard = document.getElementById(id);
   
-    //for phone
-    var inputPhoneNo = document.getElementById("inputPhoneNo").value
-    // regex pattern
-    var regPhone = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
-    // check
-    if (!regPhone.test(inputPhoneNo)) {
-      document.getElementById("error").innerHTML = 'invalid phone';
-      document.getElementById('error').classList.remove('d-none');
-      return false
+    // Update the user card with the new data
+    userCard = name;
+    userCard = email;
+    userCard = phone;
+
+    // Send the updated user data to the server
+    fetch(`https://dummyjson.com/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name,
+        email,
+        phone
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => res.json()
+    ).then(console.log)
+    .catch(err => console.error(err));
+  }
+
+// function to call in update button
+  function addButton(id){
+
+        var userCard = document.getElementById('card'+id);
+
+        var name= document.getElementById('inputName').value;
+        userCard.querySelector('#setName'+id).textContent = name;
+
+        var email= document.getElementById('inputEmail').value;
+        userCard.querySelector('#setEmail'+id).textContent = email;
+
+        var phone= document.getElementById('inputPhoneNo').value;
+        userCard.querySelector('#setPhoneNo'+id).textContent = phone;
+  }
+
+// deleting the data
+function deleteUser(id) {
+  fetch(`https://dummyjson.com/users/${id}`, {
+    method: 'DELETE'
+  })
+  .then(res => {
+    if (res.ok) {
+      const userCard = document.getElementById('card'+id);
+      userCard.remove();
+    } else {
+      throw new Error('Failed to delete user');
     }
-  
-    console.log('run')
+  })
+  .catch(err => console.error(err));
+}
 
-    document.getElementById("setName").innerHTML = inputName;
-    document.getElementById("setEmail").innerHTML = inputEmail;
-    document.getElementById("setPhoneNo").innerHTML = inputPhoneNo;
-    
-    var isChecked = document.getElementById('flexRadioDefault1').checked;
-    var button_value;
-    var button = document.getElementById("result")
-
-    if(isChecked){
-        button_value = document.getElementById('btn1').innerHTML;
-        button.classList.remove("btn-success");
-        button.classList.add("btn" ,"btn-primary");
-    }
-    else {
-        button_value = document.getElementById('btn2').innerHTML;
-        button.classList.remove("btn-primary");
-        button.classList.add("btn" ,"btn-success");
-    }
-    button.innerHTML=button_value;
-
-
-    var card = document.getElementById("card");
-    card.classList.remove("d-none")
-
-    var setName = document.getElementById("setName");
-    setName.innerHTML= inputName;
-
-    var setEmail = document.getElementById("setEmail");
-    setEmail.innerHTML= inputEmaili;
-
-    var setPhoneNo = document.getElementById("setPhoneNo");
-    setPhoneNo.innerHTML= inputPhoneNo;
-
-        var reader = new FileReader();
-        reader.onload = function(){
-          var image = document.getElementById('image');
-          image.src = reader.result;
-        };
-        reader.readAsDataURL(document.getElementById("file").files[0])
+// creating our own data
+function create(){
+ 
 }
