@@ -3,11 +3,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assignment 4</title>
+    <title>Working of API</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <link rel="stylesheet" href="design.css">
-<script src="design.js"></script>
 </head>
 <body>
     <div>
@@ -28,21 +27,20 @@
 <div class="row">
     <div class="col-md-6 col-lg-6 col-12">
         <p class="text-center" style="color:blue; margin-top:10px; font-weight: bold; font-size: medium;"> Add Contact</p>
-        <div class="alert alert-danger d-none " id="error"></div>
         <!-- <form class="row g-3"> -->
             <div class="col-sm-12">
               <label for="inputName" class="form-label">Name</label>
-              <input type="text" class="form-control" id="inputName" placeholder="Enter your name">
+              <input type="text" class="form-control" id="inputName"  placeholder="Enter your name">
             </div>
   
               <div class="col-sm-12">
                 <label for="inputEmail" class="form-label">Email</label>
-                <input type="email" class="form-control" id="inputEmail" placeholder="Enter your Email">
+                <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email">
               </div>
   
               <div class="col-sm-12">
                 <label for="inputPhoneNo" class="form-label">Phone Number</label>
-                <input type="text" class="form-control" id="inputPhoneNo" placeholder="Enter your Phone Number">
+                <input type="text" class="form-control" id="inputPhoneNo" placeholder="Enter your phone number">
               </div>
   
               <div class="row" style="margin-top: 10px;">
@@ -68,116 +66,27 @@
                 <img src="addimage.png" class="rounded" alt="my-img.jpg" style="height: 300px; width: 300px;">
               </div>
               <input type="file" accept="image/*" id="file" style="margin-bottom: 10px;">
-              <div class="row" onclick="add()">
-                <button  class="btn btn-primary addContact">Add Contact</button>
+              <div class="row">
+                <div class="col-md-5 col-lg-5 col-12 row">
+                  <button  class="btn btn-primary addContact"  onclick="addButton(this.id)">Update</button>
+                </div>
+                <div class="col-md-5 col-lg-5 col-12 row">
+                  <button  class="btn btn-success" onclick="create()"> Add Contact </button>
+                </div>
               </div>
             <!-- </form> -->
     </div>
 
     <div class="col-md-6 col-lg-6 col-12">
         <input type="text" class="form-control" placeholder="Filter Contacts..." style="margin-top: 10px;">
-       
-        <div class="card mb-3 d-none" id="card" style="max-width: 460px; margin-top: 20px;">
-          <div class="card-body">
-              <div class="row personal1 mb-3">
-                  <div class="col">
-                      <h5 id="setName" class="names"></h5>
-                          <p><img src="mail.png" style="height: 20px; width:20px;"><span id="setEmail"></span></p>
-                          <p><img src="phone.png" style="height: 20px; width:20px;"><span id="setPhoneNo"></span></p>
-                      <div>
-                          <button type="button" class="btn btn-dark">Edit</button>
-                          <button type="button" class="btn btn-danger">Delete</button>
-                      </div>
-                  </div>
-                  <div class="col">
-                      <button type="submit" id="result" style="float: right; margin-right: 30px;"></button>
-                      <div>
-                        <img style="height: 150px; width: 150px; float: right;" id="image">
-                      </div>
-                  </div>
-              </div>
-          </div>
-        </div>
-
-        <div class="card mb-3" style="max-width: 460px; margin-top: 20px;">
-            <div class="card-body">
-                <div class="row personal1 mb-3">
-                    <div class="col">
-                        <h5 class="names">Ishan Sarker</h5>
-                        <p>
-                            <img src="mail.png" style="height: 20px; width:20px;">
-                            ishan@gmail.com</p>
-                        <p>
-                            <img src="phone.png" style="height: 20px; width:20px;">
-                            01719058105</p>
-                        <div>
-                            <button type="button" class="btn btn-dark">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="col" id="buttons">
-                        <button type="submit" class="btn btn-primary" name="button1" style="float: right; margin-right: 30px;" id="btn1" value="Personal">Personal</button>
-                        <div>
-                          <img src="img1.png" style="height: 150px; width: 150px; float: right;">
-                        </div>
-                    </div>
-                </div>
+    
+            <div id="main">
             </div>
-          </div>
-
-          <div class="card bg-gray mb-3" style="max-width: 460px;">
-            <div class="card-body">
-                <div class="row personal1 mb-3">
-                    <div class="col">
-                        <h5 class="names">Erafi Ahonaf</h5>
-                        <p>
-                            <img src="mail.png" style="height: 20px; width:20px;">
-                            erafi@gmail.com</p>
-                        <p>
-                            <img src="phone.png" style="height: 20px; width:20px;">
-                            01719058105</p>
-                        <div>
-                            <button type="button" class="btn btn-dark">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="col"  id="buttons">
-                        <button type="submit" class="btn btn-success" name="button1" style="float: right; margin-right: 20px;" id="btn2" value="Professional">Professional</button>
-                        <div>
-                          <img src="img1.png" style="height: 150px; width: 150px; float: right;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-
-          <div class="card bg-gray mb-3" style="max-width: 460px;">
-            <div class="card-body">
-                <div class="row personal1 mb-3">
-                    <div class="col">
-                        <h5 class="names">John Doe</h5>
-                        <p>
-                            <img src="mail.png" style="height: 20px; width:20px;">
-                            john@gmail.com</p>
-                        <p>
-                            <img src="phone.png" style="height: 20px; width:20px;">
-                            01719058105</p>
-                        <div>
-                            <button type="button" class="btn btn-dark">Edit</button>
-                            <button type="button" class="btn btn-danger">Delete</button>
-                        </div>
-                    </div>
-                    <div class="col"  id="buttons">
-                        <button type="submit" class="btn btn-success" name="button1" style="float: right; margin-right: 20px;" id="btn2" value="Professional">Professional</button>
-                        <div>
-                          <img src="img1.png" style="height: 150px; width: 150px; float: right;">
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
     </div>
 </div>
-    </div>
+</div>
+
+    <script src="design.js"></script>
 </body>
 </html>
+
